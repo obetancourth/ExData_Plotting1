@@ -11,8 +11,6 @@ if(!file.exists("./data/household_power_consumption_tidy.txt")){
     rawDS$Date = as.Date(rawDS$Date,"%d/%m/%Y")
     #Filtering Dataset to date 2007-02-01 and 2007-02-02
     tidyDS <- rbind(rawDS[rawDS[,1]==as.Date("2007-02-01"),],rawDS[rawDS[,1]==as.Date("2007-02-02"),])
-    #Changing Time Column to Time
-    #Converting Time Column to Time
     #Wrting TidyDataSet to Smaller Sample File.
     write.table(tidyDS, file = "./data/household_power_consumption_tidy.txt",row.names=FALSE);
     print("Finished generating Tidy DataSet and written to file!")
@@ -23,5 +21,11 @@ if(!file.exists("./data/household_power_consumption_tidy.txt")){
   print("Reading From Tidy Data Set file")
   tidyDS <- read.table(file="./data/household_power_consumption_tidy.txt", header = TRUE)
 }
-#Setting Time Column to Column
-tidyDS$Time<-strptime(tidyDS$Time,format="%H:%M:%S")
+#Setting Date Column to Date
+tidyDS$Date = as.Date(tidyDS$Date)
+#Setting Time Column to DateTime
+tidyDS$Time<-strptime( paste( format(tidyDS$Date,"%Y/%m/%d") , tidyDS$Time),format="%Y/%m/%d %H:%M:%S")
+#Preparing Device
+png(file="plot2.png", width=480, height=480, bg="transparent")
+plot(tidyDS$Time, tidyDS$Global_active_power, type="l", ylab="Global Active Power (kilowatts)", xlab="")
+dev.off()

@@ -26,6 +26,9 @@ tidyDS$Date = as.Date(tidyDS$Date)
 #Setting Time Column to DateTime
 tidyDS$Time<-strptime( paste( format(tidyDS$Date,"%Y/%m/%d") , tidyDS$Time),format="%Y/%m/%d %H:%M:%S")
 #Preparing Device
-png(file="plot1.png", width=480, height=480, bg="transparent")
-hist(tidyDS$Global_active_power,col = "red", main="Global Active Power", xlab="Global Active Power (kilowatts)")
+png(file="plot3.png", width=480, height=480, bg="transparent")
+plot(tidyDS$Time, tidyDS$Sub_metering_1, type="l", ylab="Energy Sub Metering", xlab="", col="black")
+lines(tidyDS$Time, tidyDS$Sub_metering_2, type="l", col="red")
+lines(tidyDS$Time, tidyDS$Sub_metering_3, type="l", col="blue")
+legend("topright",legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), col=c("black","red","blue"), lty=1)
 dev.off()
